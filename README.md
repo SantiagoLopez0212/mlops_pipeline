@@ -13,7 +13,7 @@ El objetivo de este proyecto sera **predecir que probabilidad hay de que un clie
 3. Evaluar el rendimiento de varios modelos y seleccionar el mejor para el proyecto.
 4. Aplicar el balancio de clases y técnicas de ensamble para mejorar la precisión.
 
-### 📂 Dataset
+### Dataset
 **Fuente:** [Telecom Churn Dataset](https://www.kaggle.com/datasets)  
 **Descripción:** Contiene información de clientes de una empresa de telecomunicaciones, incluyendo:
 - `AccountWeeks`: Antigüedad del cliente.  
@@ -47,3 +47,4 @@ El objetivo de este proyecto sera **predecir que probabilidad hay de que un clie
 **Santiago López Gómez**  
 Estudiante de Ingeniería de Sistemas - Universidad Católica Luis Amigó  
 2025
+
