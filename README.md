@@ -1,9 +1,18 @@
 # Proyecto final - Machine learning Supervisado
 ## Predicción de Deserción de clientes (Telecom Churn)
 
-### Comprensión del negocio
-Una empresa de telecomunicaciones busca reducir la tasa de deserción de clientes (churn).
-Este churn pasa cuando un cliente toma la decisión de cancelar su servicio, generando pérdidas de ingresos y mayores costos de adquisición de nuevos usuarios.
+## Comprensión del negocio
+
+El proyecto busca predecir **la deserción de clientes (Churn)** en una empresa de telecomunicaciones.  
+A partir de características del cliente —como su antigüedad (`AccountWeeks`), uso de datos (`DataUsage`), plan contratado (`DataPlan`), cantidad de llamadas al servicio al cliente (`CustServCalls`), entre otras—, el objetivo es determinar la probabilidad de que un cliente **abandone el servicio**.
+
+El modelo permitirá a la empresa:
+- Identificar clientes con alto riesgo de fuga.
+- Optimizar estrategias de retención.
+- Reducir costos de adquisición de nuevos usuarios.
+
+**Variable objetivo:** `Churn` (1 = el cliente canceló el servicio, 0 = sigue activo).  
+**Tipo de modelo:** Supervisado, clasificación binaria.
 
 El objetivo de este proyecto sera **predecir que probabilidad hay de que un cliente abandone la compañia** tomando como base los patrones de uso, cargos mensuales y comportamiento de atención al cliente.
 
@@ -47,5 +56,6 @@ El objetivo de este proyecto sera **predecir que probabilidad hay de que un clie
 **Santiago López Gómez**  
 Estudiante de Ingeniería de Sistemas - Universidad Católica Luis Amigó  
 2025
+
 
 
