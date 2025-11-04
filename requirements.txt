@@ -12,3 +12,6 @@ scikit-learn==1.3.2
 # Entorno y soporte para notebooks
 ipykernel==6.27.1
 jupyter==1.0.0
+
+# Visualización avanzada
+plotly==5.18.0
