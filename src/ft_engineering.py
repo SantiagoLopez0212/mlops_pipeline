@@ -1,4 +1,10 @@
-from typing import List, Tuple, Optional
+"""
+Resultado esperado:
+    - Genera los pipelines de transformación de variables.
+    - Retorna los datasets de entrenamiento y validación listos para modelar.
+"""
+
+from typing import List, Tuple
 import numpy as np
 import pandas as pd
 from sklearn.compose import ColumnTransformer
@@ -6,81 +12,81 @@ from sklearn.impute import SimpleImputer
 from sklearn.preprocessing import OneHotEncoder, OrdinalEncoder
 from sklearn.model_selection import train_test_split
 
-# Definición de las variables según la eda
 
+# Variables usando la eda
 NUMERIC_FEATURES: List[str] = [
     "AccountWeeks", "DataUsage", "CustServCalls", "DayMins",
     "DayCalls", "MonthlyCharge", "OverageFee", "RoamMins"
 ]
+
 CATEGORICAL_FEATURES: List[str] = ["ContractRenewal", "DataPlan"]
-ORDINAL_FEATURES: List[str] = []  # si tuvieras alguna ordinal, se define aquí
-TARGET_COL = "Churn"
 
-# Creación del preprocesador (ColumnTransformer)
+ORDINAL_FEATURES: List[str] = []  
 
-def create_preprocessor(
-    numeric_features: Optional[List[str]] = None,
-    categorical_features: Optional[List[str]] = None,
-    ordinal_features: Optional[List[str]] = None,
-    ordinal_categories: Optional[List[List[str]]] = None
-) -> ColumnTransformer:
-    from sklearn.pipeline import Pipeline
+TARGET_COL: str = "Churn"
 
-    if numeric_features is None:
-        numeric_features = NUMERIC_FEATURES
-    if categorical_features is None:
-        categorical_features = CATEGORICAL_FEATURES
-    if ordinal_features is None:
-        ordinal_features = ORDINAL_FEATURES
 
-    # Pipeline numérico
-    numeric_pipeline = Pipeline(steps=[
-        ("imputer", SimpleImputer(strategy="mean"))
-    ])
+#Crear pipelines de los features
+def create_feature_pipeline() -> ColumnTransformer:
+"""
+#1. Crear un pipeline de transformación de variables numéricas y categóricas.
+    
+    Returns:
+        ColumnTransformer: pipeline de preprocesamiento
+    """
+    numeric_pipeline = SimpleImputer(strategy="median")
 
-    # Pipeline categórico
-    categorical_pipeline = Pipeline(steps=[
-        ("imputer", SimpleImputer(strategy="most_frequent")),
-        ("encoder", OneHotEncoder(handle_unknown="ignore", sparse_output=False))
-    ])
+    categorical_pipeline = OneHotEncoder(handle_unknown="ignore")
 
-    # Pipeline ordinal 
-    transformers = [
-        ("numeric", numeric_pipeline, numeric_features),
-        ("categorical", categorical_pipeline, categorical_features)
-    ]
-
-    if len(ordinal_features) > 0:
-        ordinal_pipeline = Pipeline(steps=[
-            ("imputer", SimpleImputer(strategy="most_frequent")),
-            ("ordinal", OrdinalEncoder(categories=ordinal_categories))
-        ])
-        transformers.append(("ordinal", ordinal_pipeline, ordinal_features))
-
+    # ColumnTransformer combina las transformaciones
     preprocessor = ColumnTransformer(
-        transformers=transformers,
-        remainder="drop",
-        verbose_feature_names_out=False
+        transformers=[
+            ("num", numeric_pipeline, NUMERIC_FEATURES),
+            ("cat", categorical_pipeline, CATEGORICAL_FEATURES)
+        ],
+        remainder="passthrough"  # conserva las columnas no transformadas
     )
 
     return preprocessor
 
-# División X, y y train/test
 
-def split_xy(df: pd.DataFrame, target: str = TARGET_COL) -> Tuple[pd.DataFrame, pd.Series]:
-    X = df.drop(columns=[target])
-    y = df[target].astype(int)
-    return X, y
+#División de datos
+def split_dataset(df: pd.DataFrame, test_size: float = 0.2, random_state: int = 42) -> Tuple[pd.DataFrame, pd.DataFrame, pd.Series, pd.Series]:
+    """
+    Divide el dataset en conjuntos de entrenamiento y prueba.
+    
+    Args:
+        df (pd.DataFrame): Dataset completo
+        test_size (float): Proporción del conjunto de prueba
+        random_state (int): Semilla de aleatoriedad
+        
+    Returns:
+        X_train, X_test, y_train, y_test
+    """
+    X = df.drop(columns=[TARGET_COL])
+    y = df[TARGET_COL]
 
-def make_train_test(df: pd.DataFrame, test_size: float = 0.2, random_state: int = 42):
-    X, y = split_xy(df, TARGET_COL)
-    return train_test_split(X, y, test_size=test_size, random_state=random_state, stratify=y)
+    X_train, X_test, y_train, y_test = train_test_split(
+        X, y, test_size=test_size, random_state=random_state, stratify=y
+    )
 
-# Carga limpia de datos
+    return X_train, X_test, y_train, y_test
 
-def load_data(path: str) -> pd.DataFrame:
-    df = pd.read_csv(path)
-    for c in CATEGORICAL_FEATURES + [TARGET_COL]:
-        if c in df.columns:
-            df[c] = df[c].astype(int)
-    return df
+
+#Función principal de prueba
+if __name__ == "__main__":
+    # Carga del dataset base
+    df = pd.read_csv("base_de_datos.csv")
+
+    print("Dataset cargado correctamente.")
+    print(f"Dimensiones: {df.shape}")
+
+    # Crear pipeline
+    preprocessor = create_feature_pipeline()
+    print("\nPipeline de features creado correctamente.")
+    print(preprocessor)
+
+    # División de datos
+    X_train, X_test, y_train, y_test = split_dataset(df)
+    print(f"\nTamaño entrenamiento: {X_train.shape}, prueba: {X_test.shape}")
+)
