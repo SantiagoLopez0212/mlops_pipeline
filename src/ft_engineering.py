@@ -45,7 +45,7 @@ def split_dataset(df: pd.DataFrame, test_size: float = 0.2, random_state: int = 
 
 if __name__ == "__main__":
     # Cargar el dataset
-    df = pd.read_csv("../base_de_datos.csv")
+    df = pd.read_csv("../telecom_churn.csv)
     print(f"Dimensiones: {df.shape}\n")
 
     # Crear el pipeline
