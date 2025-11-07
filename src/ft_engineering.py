@@ -1,23 +1,21 @@
 from typing import List, Tuple
-import numpy as np
 import pandas as pd
 from sklearn.compose import ColumnTransformer
 from sklearn.impute import SimpleImputer
-from sklearn.preprocessing import OneHotEncoder, OrdinalEncoder
+from sklearn.preprocessing import OneHotEncoder
 from sklearn.model_selection import train_test_split
 
-# Variables usando la EDA
+# Variables según la EDA
 NUMERIC_FEATURES: List[str] = [
     "AccountWeeks", "DataUsage", "CustServCalls", "DayMins",
     "DayCalls", "MonthlyCharge", "OverageFee", "RoamMins"
 ]
 
 CATEGORICAL_FEATURES: List[str] = ["ContractRenewal", "DataPlan"]
-ORDINAL_FEATURES: List[str] = []  # si tuvieras alguna ordinal, se define aquí
+ORDINAL_FEATURES: List[str] = []
 TARGET_COL: str = "Churn"
 
-
-# Pipeline de transformación para variables numéricas y categóricas
+# Pipeline de transformación
 def create_feature_pipeline() -> ColumnTransformer:
     numeric_pipeline = SimpleImputer(strategy="median")
     categorical_pipeline = OneHotEncoder(handle_unknown="ignore")
@@ -31,45 +29,31 @@ def create_feature_pipeline() -> ColumnTransformer:
     )
     return preprocessor
 
-
-# Función de división de los datos
-def split_dataset(df: pd.DataFrame, test_size: float = 0.2, random_state: int = 42) -> Tuple[pd.DataFrame, pd.DataFrame, pd.Series, pd.Series]:
+# División de los datos
+def split_dataset(df: pd.DataFrame, test_size: float = 0.2, random_state: int = 42
+                  ) -> Tuple[pd.DataFrame, pd.DataFrame, pd.Series, pd.Series]:
     X = df.drop(columns=[TARGET_COL])
     y = df[TARGET_COL]
-
-    X_train, X_test, y_train, y_test = train_test_split(
-        X, y, test_size=test_size, random_state=random_state, stratify=y
-    )
-    return X_train, X_test, y_train, y_test
+    return train_test_split(X, y, test_size=test_size, random_state=random_state, stratify=y)
 
 
 if __name__ == "__main__":
-    # Cargar el dataset
-    df = pd.read_csv("../telecom_churn.csv)
-    print(f"Dimensiones: {df.shape}\n")
+    try:
+        df = pd.read_csv("../telecom_churn.csv")
+        print("Dataset cargado correctamente")
+        print(f"Dimensiones: {df.shape}")
 
-    # Crear el pipeline
-    preprocessor = create_feature_pipeline()
-    print("Pipeline de características: ")
+        preprocessor = create_feature_pipeline()
+        X_train, X_test, y_train, y_test = split_dataset(df)
 
-    # División de los datos
-    X_train, X_test, y_train, y_test = split_dataset(df)
-    print(f"Conjunto de entrenamiento: {X_train.shape}, Prueba: {X_test.shape}\n")
+        X_train_transformed = preprocessor.fit_transform(X_train)
+        X_test_transformed = preprocessor.transform(X_test)
 
-    # Aplicar el pipeline de transformación
-    X_train_transformed = preprocessor.fit_transform(X_train)
-    X_test_transformed = preprocessor.transform(X_test)
+        print("Transformación completada correctamente.")
+        print(f" Shape entrenamiento: {X_train_transformed.shape}")
+        print(f" Shape prueba: {X_test_transformed.shape}")
 
-    print("Transformación completada.")
-    print(f"Shape final de entrenamiento: {X_train_transformed.shape}")
-    print(f"Shape final de prueba: {X_test_transformed.shape}\n")
-
-    # Primeras filas
-    print("Primeras filas del dataset original:")
-    print(X_train.head(3))
-    print("\nPipeline aplicado. Listo para modelar.")
-
-"""
-Este código genera los pipelines de transformación de variables y
-retorna los datasets de validación y entrenamiento listos para modelar.
-"""
+    except FileNotFoundError:
+        print("Error: No se encontró el archivo '../telecom_churn.csv'. Verifica la ruta.")
+    except Exception as e:
+        print(f" Error inesperado: {e}")
