@@ -47,6 +47,13 @@ El objetivo de este proyecto sera **predecir que probabilidad hay de que un clie
 5. Evaluación de métricas y comparación de modelos  
 6. Selección del modelo ganador (XGBoost)
 
+# Instalación del entorno
+pip install --upgrade pip setuptools wheel
+
+# Instalar dependencias principales
+pip install -r requirements.txt
+
+
 ### Resultados Esperados
 - Identificar los factores clave que influyen en la deserción.  
 - Entrenar un modelo predictivo robusto que permita detectar clientes propensos a abandonar.  
@@ -56,6 +63,7 @@ El objetivo de este proyecto sera **predecir que probabilidad hay de que un clie
 **Santiago López Gómez**  
 Estudiante de Ingeniería de Sistemas - Universidad Católica Luis Amigó  
 2025
+
 
 
 
