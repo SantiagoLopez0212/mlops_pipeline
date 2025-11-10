@@ -1,6 +1,6 @@
 # Librerías principales 
-numpy==1.25.2  
-pandas==2.0.3        
+numpy==1.25.2
+pandas==2.0.3
 
 # Visualización 
 matplotlib==3.8.2
@@ -16,19 +16,26 @@ ipykernel==6.27.1
 jupyter==1.0.0
 notebook==7.0.6
 
-# Streamlit (interfaz de usuario) 
+# Streamlit (interfaz de usuario)
 streamlit==1.31.1
 
-# Utilidades adicionales 
+# Utilidades adicionales
 jsonschema==4.20.0
 requests==2.31.0
 tqdm==4.66.1
 python-dateutil==2.8.2
 pytz==2023.3.post1
 
-# MLOps y despliegue 
+# MLOps y despliegue
 mlflow==2.10.0
 fastapi==0.109.0
 uvicorn==0.24.0.post1
+
+# Evitar compilaciones desde fuente (seguridad en Windows)
+meson==1.3.0
+meson-python==0.15.0
+Cython==0.29.37
+
+
 
 
