@@ -28,7 +28,8 @@ pytz==2023.3.post1
 
 # ==== MLOps y despliegue ====
 mlflow==2.10.0
-fastapi==0.109.0
+fastapi==0.104.1
+starlette==0.27.0
 uvicorn==0.24.0.post1
 dill==0.3.8
 pydantic==2.6.0
@@ -37,6 +38,7 @@ pydantic==2.6.0
 wheel==0.42.0
 
 python-multipart==0.0.9
+
 
 
 
