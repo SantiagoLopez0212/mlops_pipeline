@@ -30,8 +30,11 @@ pytz==2023.3.post1
 mlflow==2.10.0
 fastapi==0.109.0
 uvicorn==0.24.0.post1
-
 dill==0.3.8
+pydantic==2.6.0
+
+# ==== Compatibilidad de instalación ====
+wheel==0.42.0
 
 
 
