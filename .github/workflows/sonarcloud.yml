@@ -38,8 +38,10 @@ jobs:
 
       - name: Ejecutar pruebas con cobertura
         run: |
+          export PYTHONPATH=$(pwd)
           pytest -q --maxfail=1 --disable-warnings \
                  --cov=src --cov-report=xml:coverage.xml
+
 
       - name: SonarCloud Scan
         uses: SonarSource/sonarcloud-github-action@v2
