@@ -48,6 +48,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: 🚦 Quality Gate (opcional)
-        uses: SonarSource/sonarcloud-quality-gate-action@master
+        uses: sonarsource/sonarqube-quality-gate-action@v1.1.0
         env:
-            SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+            SSONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+
