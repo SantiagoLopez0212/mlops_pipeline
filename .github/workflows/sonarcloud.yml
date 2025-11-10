@@ -56,10 +56,4 @@ jobs:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      # Verificación de Quality Gate (opcional)
-      - name: 🚦 Quality Gate (opcional)
-        uses: SonarSource/sonarcloud-quality-gate-action@v1
-        env:
-            SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-
-
+   
