@@ -36,6 +36,9 @@ pydantic==2.6.0
 # ==== Compatibilidad de instalación ====
 wheel==0.42.0
 
+python-multipart==0.0.9
+
+
 
 
 
