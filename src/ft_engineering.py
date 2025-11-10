@@ -1,82 +1,60 @@
-"""
-Descripción:
-Este script entrena un modelo base de Machine Learning para predecir la probabilidad de churn en clientes de telecomunicaciones.
-
-Incluye:
-- Carga segura del dataset (compatible con entorno local y Docker)
-- Pipeline de ingeniería de características desde ft_engineering.py
-- División de datos en entrenamiento y prueba
-- Entrenamiento del modelo base (LogisticRegression)
-- Evaluación mediante métricas y matriz de confusión
-- Guardado del modelo y preprocesador para despliegue futuro
-"""
-
-import os
+from typing import List, Tuple
 import pandas as pd
-from sklearn.linear_model import LogisticRegression
-from sklearn.metrics import accuracy_score, confusion_matrix, classification_report
-import joblib
+from sklearn.compose import ColumnTransformer
+from sklearn.impute import SimpleImputer
+from sklearn.preprocessing import OneHotEncoder
+from sklearn.model_selection import train_test_split
 
-# Importar funciones personalizadas
-from ft_engineering import create_feature_pipeline, split_dataset
+# Variables según la EDA
+NUMERIC_FEATURES: List[str] = [
+    "AccountWeeks", "DataUsage", "CustServCalls", "DayMins",
+    "DayCalls", "MonthlyCharge", "OverageFee", "RoamMins"
+]
 
+CATEGORICAL_FEATURES: List[str] = ["ContractRenewal", "DataPlan"]
+ORDINAL_FEATURES: List[str] = []
+TARGET_COL: str = "Churn"
 
-def run_heuristic_model():
+# Pipeline de transformación
+def create_feature_pipeline() -> ColumnTransformer:
+    numeric_pipeline = SimpleImputer(strategy="median")
+    categorical_pipeline = OneHotEncoder(handle_unknown="ignore")
 
+    preprocessor = ColumnTransformer(
+        transformers=[
+            ("num", numeric_pipeline, NUMERIC_FEATURES),
+            ("cat", categorical_pipeline, CATEGORICAL_FEATURES)
+        ],
+        remainder="passthrough"
+    )
+    return preprocessor
 
-    # Cargar datos 
-    csv_path = os.path.join(os.path.dirname(__file__), "..", "telecom_churn.csv")
-
-    if not os.path.exists(csv_path):
-        raise FileNotFoundError(f"No se encontró el archivo CSV en la ruta: {csv_path}")
-
-    df = pd.read_csv(csv_path)
-    print(f"Dataset cargado correctamente ({df.shape[0]} registros, {df.shape[1]} columnas)")
-
-    # Crear pipeline de características 
-    preprocessor = create_feature_pipeline()
-
-    # División de datos 
-    X_train, X_test, y_train, y_test = split_dataset(df)
-    print("División de datos completada correctamente.")
-
-    # Aplicar transformaciones 
-    X_train_transformed = preprocessor.fit_transform(X_train)
-    X_test_transformed = preprocessor.transform(X_test)
-
-    # Entrenar modelo base 
-    model = LogisticRegression(max_iter=1000, solver='liblinear', random_state=42)
-    model.fit(X_train_transformed, y_train)
-    print("Modelo entrenado correctamente.")
-
-    # Evaluar modelo 
-    y_pred = model.predict(X_test_transformed)
-
-    acc = accuracy_score(y_test, y_pred)
-    cm = confusion_matrix(y_test, y_pred)
-    report = classification_report(y_test, y_pred)
-
-    print("\nRESULTADOS DEL MODELO BASE (LOGISTIC REGRESSION) ")
-    print(f"Accuracy: {acc:.4f}")
-    print("\nMatriz de Confusión:\n", cm)
-    print("\nReporte de Clasificación:\n", report)
-
-    # Guardar modelo y preprocesador
-    os.makedirs("../models", exist_ok=True)
-    joblib.dump(model, "../models/model_baseline.pkl")
-    joblib.dump(preprocessor, "../models/preprocessor.pkl")
-
-    print("Modelo y preprocesador guardados exitosamente en la carpeta 'models/'.")
-
-    return model, preprocessor
+# División de los datos
+def split_dataset(df: pd.DataFrame, test_size: float = 0.2, random_state: int = 42
+                  ) -> Tuple[pd.DataFrame, pd.DataFrame, pd.Series, pd.Series]:
+    X = df.drop(columns=[TARGET_COL])
+    y = df[TARGET_COL]
+    return train_test_split(X, y, test_size=test_size, random_state=random_state, stratify=y)
 
 
-# Ejecución principal 
 if __name__ == "__main__":
-    run_heuristic_model()
+    try:
+        df = pd.read_csv("../telecom_churn.csv")
+        print("Dataset cargado correctamente")
+        print(f"Dimensiones: {df.shape}")
 
+        preprocessor = create_feature_pipeline()
+        X_train, X_test, y_train, y_test = split_dataset(df)
+
+        X_train_transformed = preprocessor.fit_transform(X_train)
+        X_test_transformed = preprocessor.transform(X_test)
+
+        print("Transformación completada correctamente.")
+        print(f" Shape entrenamiento: {X_train_transformed.shape}")
+        print(f" Shape prueba: {X_test_transformed.shape}")
 
     except FileNotFoundError:
         print("Error: No se encontró el archivo '../telecom_churn.csv'. Verifica la ruta.")
     except Exception as e:
         print(f" Error inesperado: {e}")
+
