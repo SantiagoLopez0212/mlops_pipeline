@@ -7,7 +7,6 @@ sys.path.append(str(Path(__file__).resolve().parents[1]))
 from fastapi.testclient import TestClient
 from src.api_main import app
 
-# Cliente de pruebas
 client = TestClient(app)
 
 def test_home():
