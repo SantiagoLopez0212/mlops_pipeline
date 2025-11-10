@@ -31,6 +31,8 @@ jsonschema==4.20.0
 python-dateutil==2.8.2
 pytz==2023.3.post1
 wheel==0.42.0
+httpx==0.25.2
+
 
 
 
