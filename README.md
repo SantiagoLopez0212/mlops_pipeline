@@ -64,7 +64,7 @@ pip install -r requirements.txt
 Estudiante de Ingeniería de Sistemas - Universidad Católica Luis Amigó  
 2025
 
-Actualización: vinculación SonarCloud completada.
+.
 
 
 
