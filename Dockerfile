@@ -1,21 +1,26 @@
-# Imagen base de Python
+# Imagen base
 FROM python:3.12-slim
 
-# Establecer el directorio de trabajo dentro del contenedor
+# Evitar buffering
+ENV PYTHONUNBUFFERED=1
+
+# Instalar dependencias del sistema
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    build-essential gcc g++ \
+    && rm -rf /var/lib/apt/lists/*
+
+# Directorio de trabajo
 WORKDIR /app
 
-# Copiar el archivo de dependencias
+# Copiar dependencias e instalarlas
 COPY requirements.txt .
+RUN pip install --upgrade pip && pip install --no-cache-dir -r requirements.txt
 
-# Instalar las dependencias del proyecto
-RUN pip install --no-cache-dir -r requirements.txt
-
-# Copiar todo el contenido del proyecto
+# Copiar todo el proyecto al contenedor
 COPY . .
 
-# Exponer el puerto en el que correrá la API
+# Exponer el puerto de FastAPI
 EXPOSE 8000
 
-# Comando para iniciar el servidor con FastAPI
+# Ejecutar el servicio de la API
 CMD ["uvicorn", "src.api_main:app", "--host", "0.0.0.0", "--port", "8000"]
-
