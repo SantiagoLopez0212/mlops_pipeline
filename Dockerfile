@@ -1,26 +1,24 @@
-# Imagen base
-FROM python:3.12-slim
+# Imagen base de Python (estable y ligera)
+FROM python:3.11-slim
 
-# Evitar buffering
+# Evita que Python genere archivos .pyc y usa salida sin buffer
+ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONUNBUFFERED=1
 
-# Instalar dependencias del sistema
-RUN apt-get update && apt-get install -y --no-install-recommends \
-    build-essential gcc g++ \
-    && rm -rf /var/lib/apt/lists/*
-
-# Directorio de trabajo
+# Establecer directorio de trabajo dentro del contenedor
 WORKDIR /app
 
-# Copiar dependencias e instalarlas
+# Copiar archivo de dependencias primero (para usar cache de Docker)
 COPY requirements.txt .
-RUN pip install --upgrade pip && pip install --no-cache-dir -r requirements.txt
 
-# Copiar todo el proyecto al contenedor
+# Instalar dependencias del proyecto
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Copiar el resto del proyecto al contenedor
 COPY . .
 
-# Exponer el puerto de FastAPI
+# Exponer el puerto donde correrá FastAPI
 EXPOSE 8000
 
-# Ejecutar el servicio de la API
+# Comando para iniciar el servidor con Uvicorn
 CMD ["uvicorn", "src.api_main:app", "--host", "0.0.0.0", "--port", "8000"]
