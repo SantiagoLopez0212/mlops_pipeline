@@ -11,46 +11,54 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      # Checkout del código
       - name: Checkout del código
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
+      # Configurar Python
       - name: Configurar Python
         uses: actions/setup-python@v5
         with:
           python-version: "3.12"
 
+      # Instalar dependencias y fijar versiones
       - name: Instalar dependencias
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
           pip install pytest pytest-cov flake8 bandit
+          pip freeze  # 🔍 Esto mostrará las versiones reales instaladas
 
+      # Verificar formato del código (Linting)
       - name: Linting con Flake8
         run: |
           flake8 src --count --select=E9,F63,F7,F82 --show-source --statistics
           flake8 src --count --exit-zero --max-complexity=10 --max-line-length=120 --statistics
 
+      # Escaneo de seguridad con Bandit
       - name: Escaneo de seguridad con Bandit
         run: |
           bandit -r src -q || true
 
+      # Ejecutar pruebas unitarias con cobertura
       - name: Ejecutar pruebas con cobertura
         run: |
           export PYTHONPATH=$(pwd)
           pytest -q --maxfail=1 --disable-warnings \
                  --cov=src --cov-report=xml:coverage.xml
 
-
+      # Análisis de calidad con SonarCloud
       - name: SonarCloud Scan
         uses: SonarSource/sonarcloud-github-action@v2
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
+      # Verificación de Quality Gate (opcional)
       - name: 🚦 Quality Gate (opcional)
-        uses: sonarsource/sonarqube-quality-gate-action@v1.1.0
+        uses: SonarSource/sonarcloud-quality-gate-action@v1.1.0
         env:
-            SSONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
