@@ -63,7 +63,10 @@ pip install -r requirements.txt
 **Santiago López Gómez**  
 Estudiante de Ingeniería de Sistemas - Universidad Católica Luis Amigó  
 2025
-<!-- trigger sonarcloud -->
+
+Actualización: vinculación SonarCloud completada.
+
+
 
 
 
