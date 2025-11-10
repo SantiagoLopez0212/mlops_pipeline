@@ -1,17 +1,34 @@
-# Librerías principales de análisis y manipulación de datos
+# Librerías principales
 pandas==2.1.4
-numpy==1.26.2
+numpy==1.26.4
 
 # Visualización
 matplotlib==3.8.2
 seaborn==0.13.2
+plotly==5.18.0
 
 # Machine Learning
 scikit-learn==1.3.2
+joblib==1.3.2
 
-# Entorno y soporte para notebooks
+# Entorno y notebooks
 ipykernel==6.27.1
 jupyter==1.0.0
+notebook==7.0.6
 
-# Visualización avanzada
-plotly==5.18.0
+# Streamlit (para interfaz)
+streamlit==1.31.1
+
+# Utilidades adicionales
+jsonschema==4.20.0
+requests==2.31.0
+tqdm==4.66.1
+
+# Control de versiones
+python-dateutil==2.8.2
+pytz==2023.3.post1
+
+# MLOps y despliegue
+mlflow==2.10.0
+fastapi==0.109.0
+uvicorn==0.24.0.post1
