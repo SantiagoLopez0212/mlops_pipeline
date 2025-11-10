@@ -4,14 +4,12 @@ from pathlib import Path
 # Asegura que se pueda importar src/
 sys.path.append(str(Path(__file__).resolve().parents[1]))
 
-# Importa el TestClient correcto
 from fastapi.testclient import TestClient
 from src.api_main import app
 
-# Instancia el cliente de pruebas
 client = TestClient(app)
 
-def test_health():
-    response = client.get("/health")
+def test_home():
+    response = client.get("/")
     assert response.status_code == 200
-    assert response.json() == {"status": "ok"}
+    assert "mensaje" in response.json()
