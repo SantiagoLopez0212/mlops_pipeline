@@ -40,12 +40,13 @@ El objetivo de este proyecto sera **predecir que probabilidad hay de que un clie
 - **Herramientas:** Scikit-learn, Imbalanced-learn, XGBoost, Pandas, Seaborn  
 
 ### Flujo del Proyecto
-1. Limpieza y análisis exploratorio (EDA)  
-2. Preprocesamiento y feature engineering  
-3. Entrenamiento de modelos supervisados  
-4. Aplicación de balanceo (SMOTE)  
-5. Evaluación de métricas y comparación de modelos  
-6. Selección del modelo ganador (XGBoost)
+1. Exploración y limpieza de los datos -> Cargar_datos.iynb y comprension_eda.ipynb  
+2. Transformación y feature engineering -> ft_engineering.py
+3. Entrenamiento de modelos base -> heuristic_model.py  
+4. Entrenamiento supervisado avanzado -> model_training.ipynb 
+5. Evaluación de desempeño -> model_evaluation.ipynb  
+6. Despliegue del modelo -> model_deploy.ipynb
+7. Monitoreo y métricas en producción -> model_monitoring
 
 # Instalación del entorno
 pip install --upgrade pip setuptools wheel
@@ -53,18 +54,40 @@ pip install --upgrade pip setuptools wheel
 # Instalar dependencias principales
 pip install -r requirements.txt
 
+# Ejecución de los Scripts en la terminal del Deepnote, recomiendo esa
+1. Abrir la terminal del proyecto, en New Terminal
+2. poner cd src
+3. Ejecutar el script del modelo base: python heuristic_model.py
+4. Para el feature engineering: python ft_engineering.py
 
 ### Resultados Esperados
-- Identificar los factores clave que influyen en la deserción.  
-- Entrenar un modelo predictivo robusto que permita detectar clientes propensos a abandonar.  
-- Formular estrategias de retención basadas en los resultados del modelo.
+- Identificar los factores clave que influyen en la deserción de clienrtes.  
+- Entrenar un modelo predictivo robusto de XGBoost o Random Forest.  
+- Detectar los clientes con alta probabilidad de abandono.
+- Formular estrategias de retención basadas en los insights del modelo.
 
-### Autor
+### Salida esperada: 
+RESULTADOS DEL MODELO BASE (LOGISTIC REGRESSION)
+Accuracy: 0.8125
+
+Matriz de Confusión:
+[[845   75]
+ [120  160]]
+
+Reporte de Clasificación:
+              precision    recall  f1-score   support
+           0       0.88      0.92      0.90       920
+           1       0.68      0.57      0.62       280
+    accuracy                           0.84      1200
+
+Conclusiones: Los modelos de Random Forest y XGBoost dieron los mejores resultados, con F1-score > 0.70
+-Las variables con mayor importancia fueron: CustServCalls, DataPlan y Data Usage, y OverageFee.
+-El modelo final permite predecir con una buena precisión los clientes que son propensos a abandonar la compañia. 
+
+### Trabajo realizado por:
 **Santiago López Gómez**  
-Estudiante de Ingeniería de Sistemas - Universidad Católica Luis Amigó  
-2025
+Estudiante de Ingeniería de Sistemas.
 
-.
 
 
 
