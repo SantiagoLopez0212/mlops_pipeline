@@ -55,10 +55,13 @@ pip install --upgrade pip setuptools wheel
 pip install -r requirements.txt
 
 # Ejecución de los Scripts en la terminal del Deepnote, recomiendo esa
-1. Abrir la terminal del proyecto, en New Terminal
-2. poner cd src
-3. Ejecutar el script del modelo base: python heuristic_model.py
-4. Para el feature engineering: python ft_engineering.py
+1. Abrir la terminal del proyecto, en New Terminal.
+2. Ejecutar el script del modelo base: python src/heuristic_model.py
+
+  
+Para el feature engineering: 
+1. poner cd src y despues python ft_engineering.py
+
 
 ### Resultados Esperados
 - Identificar los factores clave que influyen en la deserción de clienrtes.  
@@ -87,6 +90,7 @@ Conclusiones: Los modelos de Random Forest y XGBoost dieron los mejores resultad
 ### Trabajo realizado por:
 **Santiago López Gómez**  
 Estudiante de Ingeniería de Sistemas.
+
 
 
 
