@@ -48,6 +48,11 @@ El objetivo de este proyecto sera **predecir que probabilidad hay de que un clie
 6. Despliegue del modelo -> model_deploy.ipynb
 7. Monitoreo y métricas en producción -> model_monitoring
 
+#Activar el entorno virtual: 
+python -m venv venv
+venv\Scripts\activate
+pip install -r requirements.txt
+
 # Instalación del entorno
 pip install --upgrade pip setuptools wheel
 
@@ -90,6 +95,7 @@ Conclusiones: Los modelos de Random Forest y XGBoost dieron los mejores resultad
 ### Trabajo realizado por:
 **Santiago López Gómez**  
 Estudiante de Ingeniería de Sistemas.
+
 
 
 
